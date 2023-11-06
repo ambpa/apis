@@ -1,0 +1,27 @@
+{
+    "first_name": "username",
+    "last_name": "supername",
+    "email": "user@email.it",
+    "password": "p455word",
+    "is_staff": true
+}
+
+
+{
+    "content":
+        "Descrizione prima excursion",
+    "minimum_user":
+        "8",
+    "maximum_user":
+        "12",
+    "time_excursion":
+        "5",
+    "meeting_place":
+        "Via Libertà, 1",
+    "price":
+        "19.99",
+    "start_time_excursion":
+        "2023-12-11",
+    "end_booking_time":
+        "2023-12-25"
+}
