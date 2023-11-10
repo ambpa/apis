@@ -9,4 +9,6 @@ urlpatterns = [
         apis.ExcursionRetrieveUpdateDelete.as_view(),
         name="excursion_detail",
     ),
+    path("reservation/", apis.ReservationCreateListApi.as_view(), name="reservation"),
+
 ]

@@ -12,6 +12,7 @@ from . import serializer as excursion_serializer
 from . import services
 
 
+
 @authentication_classes([authentication.CustomUserAuthentication])
 @permission_classes([permissions.IsAuthenticated, user_permissions.IsStaff])
 class ExcursionCreateListApi(views.APIView):
@@ -93,4 +94,31 @@ class ExcursionRetrieveUpdateDelete(views.APIView):
             user=request.user, excursion_id=excursion_id, excursion_data=excursion
         )
 
+        return response.Response(data=serializer.data)
+
+
+
+@authentication_classes([authentication.CustomUserAuthentication])
+@permission_classes([permissions.IsAuthenticated])
+class ReservationCreateListApi(views.APIView):
+    """
+    View to list all reservation in the system.
+
+    * Requires jwt authentication.
+    """
+
+    def post(self, request):
+        serializer = excursion_serializer.ReservationSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+
+        excursion_id = request.data.get('excursion_id')
+
+        serializer.instance = services.create_reservation(user=request.user, excursion_id=excursion_id, reservation=data)
+
+        return response.Response(data=serializer.data)
+
+    def get(self, request):
+        reservation_collection = services.get_user_reservation(user=request.user)
+        serializer = excursion_serializer.ReservationSerializer(reservation_collection, many=True)
         return response.Response(data=serializer.data)
