@@ -5,7 +5,7 @@ from . import apis
 urlpatterns = [
     path("excursion/", apis.ExcursionCreateListApi.as_view(), name="excursion"),
     path(
-        "excursion/<int:excursion_id>/",
+        "excursion_detail/",
         apis.ExcursionRetrieveUpdateDelete.as_view(),
         name="excursion_detail",
     ),

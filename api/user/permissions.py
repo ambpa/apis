@@ -26,3 +26,4 @@ class IsStaff(permissions.BasePermission):
             return True
 
         return False
+

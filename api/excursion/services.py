@@ -67,9 +67,10 @@ def get_user_excursion(user: "User") -> list["ExcursionDataClass"]:
     ]
 
 
-def get_user_excursion_detail(excursion_id: int) -> "ExcursionDataClass":
+def get_user_excursion_detail(user: "User", excursion_id: int) -> "ExcursionDataClass":
     excursion = get_object_or_404(excursion_models.Excursion, pk=excursion_id)
-
+    if user.id != excursion.user.id:
+        raise exceptions.PermissionDenied("You're not the user fool")
     return ExcursionDataClass.from_instance(excursion_model=excursion)
 
 

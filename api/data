@@ -6,6 +6,10 @@
     "is_staff": true
 }
 
+{
+    "email": "user@email.it",
+    "password": "p455word"
+}
 
 {
     "content":
@@ -24,4 +28,31 @@
         "2023-12-11",
     "end_booking_time":
         "2023-12-25"
+}
+
+{
+"date_booked":0
+}
+
+{
+    "excursion":
+    {
+            "id": 3,
+            "content": "2_Descrizione prima excursion ID",
+            "date_published": "2023-11-06T19:43:46.917121Z",
+            "user": {
+                "id": 2,
+                "first_name": "username",
+                "last_name": "supername",
+                "email": "user@email.it",
+                "is_staff": true
+            },
+            "minimum_user": 6,
+            "maximum_user": 15,
+            "end_booking_time": "2023-12-22T00:00:00Z",
+            "time_excursion": "00:00:03",
+            "start_time_excursion": "2023-12-13T00:00:00Z",
+            "meeting_place": "Via Libertà, 1",
+            "price": "26.99"
+    }
 }

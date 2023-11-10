@@ -24,3 +24,4 @@ class ExcursionSerializer(serializers.Serializer):
         data = super().to_internal_value(data)
 
         return services.ExcursionDataClass(**data)
+
