@@ -3,14 +3,13 @@ from rest_framework.decorators import authentication_classes, permission_classes
 
 from . import serializer as user_serializer
 from . import services, authentication
-from .permissions import IsStaff
+from .permissions import IsStaff, IsTokenValid
 
 
 class RegisterApi(views.APIView):
     def post(self, request):
         serializer = user_serializer.UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-
         data = serializer.validated_data
         serializer.instance = services.create_user(user_dc=data)
 
@@ -21,7 +20,6 @@ class LoginApi(views.APIView):
     def post(self, request):
         email = request.data["email"]
         password = request.data["password"]
-
         user = services.user_email_selector(email=email)
 
         if user is None:
@@ -31,16 +29,14 @@ class LoginApi(views.APIView):
             raise exceptions.AuthenticationFailed("Invalid Credentials")
 
         token = services.create_token(user_id=user.id)
-
         resp = response.Response()
-
         resp.set_cookie(key="jwt", value=token, httponly=True)
 
         return resp
 
 
 @authentication_classes([authentication.CustomUserAuthentication])
-@permission_classes([IsStaff])
+@permission_classes([permissions.IsAuthenticated, IsTokenValid])
 class UserApi(views.APIView):
     """
     This endpoint can only be used
@@ -49,7 +45,6 @@ class UserApi(views.APIView):
 
     def get(self, request):
         user = request.user
-
         serializer = user_serializer.UserSerializer(user)
 
         return response.Response(serializer.data)
@@ -60,8 +55,13 @@ class UserApi(views.APIView):
 class LogoutApi(views.APIView):
 
     def post(self, request):
+        token = request.COOKIES.get("jwt")
         resp = response.Response()
-        resp.delete_cookie("jwt")
+        #resp.delete_cookie("jwt")
         resp.data = {"message": "so long farewell"}
+        serializer = user_serializer.BlackListedTokenSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+        services.create_blacklistedtoken(user=request.user, token=token, blacklistedtoken=data)
 
         return resp

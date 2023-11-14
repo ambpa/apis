@@ -15,3 +15,13 @@ class UserSerializer(serializers.Serializer):
         data = super().to_internal_value(data)
 
         return services.UserDataClass(**data)
+
+class BlackListedTokenSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
+    user = UserSerializer(read_only=True)
+    token = serializers.CharField(read_only=True)
+    timestamp = serializers.DateTimeField(read_only=True)
+    def to_internal_value(self, data):
+        data = super().to_internal_value(data)
+
+        return services.BlackListedTokenDataClass(**data)

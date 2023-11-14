@@ -57,3 +57,28 @@ def create_token(user_id: int) -> str:
     token = jwt.encode(payload, settings.JWT_SECRET, algorithm="HS256")
 
     return token
+
+
+@dataclasses.dataclass
+class BlackListedTokenDataClass:
+    user: UserDataClass = None
+    id: int = None
+    timestamp: datetime.datetime = None
+    token: str = None
+    @classmethod
+    def from_instance(cls, blacklistedtoken_model: "BlackListedToken") -> "BlackListedToken":
+        return cls(
+            token=blacklistedtoken_model.token,
+            user=blacklistedtoken_model.user,
+            id=blacklistedtoken_model.id,
+            timestamp=blacklistedtoken_model.timestamp
+        )
+
+def create_blacklistedtoken(user, token, blacklistedtoken: "BlackListedToken") -> "BlackListedToken":
+    blacklistedtoken_create = models.BlackListedToken.objects.create(
+        token=token,
+        user=user,
+        id=blacklistedtoken.id,
+        timestamp=blacklistedtoken.timestamp
+    )
+    return BlackListedTokenDataClass.from_instance(blacklistedtoken_model=blacklistedtoken_create)
